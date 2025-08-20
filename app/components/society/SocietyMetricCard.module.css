@@ -165,7 +165,6 @@
   white-space: normal;
   word-wrap: break-word;
   pointer-events: none;
-  transform: translateY(-100%);
 }
 
 .infoTooltip::after {
