@@ -2,7 +2,7 @@
   background-color: var(--background-card);
   border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  padding: 0.875rem;
+  padding: 0.75rem;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out,
     border-color 0.2s ease-in-out;
   opacity: 0;
@@ -12,6 +12,14 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 140px;
+  max-height: 180px;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .kpiCard {
+    padding: 0.875rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -38,20 +46,52 @@
   }
 }
 
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .titleRow {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   margin-bottom: 0.5rem;
+  flex-shrink: 0;
 }
 
 .title {
   font-weight: 500;
   margin-right: 0.5rem;
-  line-height: 1.2;
+  line-height: 1.1;
   flex: 1;
+  font-size: 0.75rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+}
+
+@media (min-width: 640px) {
+  .titleRow {
+    font-size: 0.875rem;
+  }
+
+  .title {
+    font-size: 0.875rem;
+    line-height: 1.2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .title {
+    font-size: 0.875rem;
+    line-height: 1.2;
+  }
 }
 
 .iconContainer {
@@ -62,18 +102,18 @@
 
 .keyMetricDiamond {
   color: var(--glow-color-key-metrics);
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   fill: currentColor;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
 .priorityStar {
   color: #f59e0b;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   fill: currentColor;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
 .infoIconWrapper {
@@ -85,8 +125,8 @@
 .infoIcon {
   cursor: pointer;
   color: #9ca3af;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   transition: color 0.2s ease-in-out;
 }
 
@@ -135,43 +175,52 @@
 .valueRow {
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
   flex-wrap: wrap;
+  min-height: 0;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .valueRow {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
 }
 
 .value {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 @media (min-width: 640px) {
   .value {
-    font-size: 1.75rem;
-    line-height: 2.25rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 }
 
 @media (min-width: 1024px) {
   .value {
-    font-size: 1.875rem;
+    font-size: 1.75rem;
     line-height: 2.25rem;
   }
 }
 
 .trendContainer {
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   display: flex;
   align-items: center;
   white-space: nowrap;
 }
 
-@media (max-width: 640px) {
+@media (min-width: 640px) {
   .trendContainer {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
   }
 }
 
@@ -184,23 +233,50 @@
 }
 
 .trendIcon {
-  width: 1rem;
-  height: 1rem;
+  width: 0.875rem;
+  height: 0.875rem;
   margin-right: 0.25rem;
 }
 
-@media (max-width: 640px) {
+@media (min-width: 640px) {
   .trendIcon {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: 1rem;
+    height: 1rem;
   }
 }
 
 .chartContainer {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
   margin-bottom: -0.5rem;
   margin-left: -0.5rem;
   margin-right: -0.5rem;
-  height: 60px;
+  height: 50px;
   overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .chartContainer {
+    height: 60px;
+    margin-top: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .keyMetricDiamond {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+  }
+
+  .priorityStar {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+  }
+
+  .infoIcon {
+    width: 16px;
+    height: 16px;
+  }
 }

@@ -39,7 +39,7 @@ export default function SocietyMetricCard({
     const options: ApexOptions = {
       chart: {
         type: 'area',
-        height: 60,
+        height: 50,
         sparkline: { enabled: true },
         animations: { enabled: false },
       },
@@ -74,7 +74,7 @@ export default function SocietyMetricCard({
       }}
       onClick={() => onClick(metric)}
     >
-      <div>
+      <div className={styles.contentWrapper}>
         <div className={styles.titleRow}>
           <span className={styles.title}>{metric.title}</span>
           <div className={styles.iconContainer}>
@@ -111,7 +111,7 @@ export default function SocietyMetricCard({
             options={chartOptions}
             series={[{ data: chartData }]}
             type="area"
-            height={60}
+            height={50}
           />
         )}
       </div>
