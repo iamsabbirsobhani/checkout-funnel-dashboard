@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { X, TrendingUp, TrendingDown } from 'lucide-react';
 import { SocietyMetric } from '../../lib/types/society';
 import { generateTrendData } from '../../lib/data/societyData';
@@ -25,86 +25,100 @@ export default function SocietyModal({
   const [chartData, setChartData] = useState<number[]>([]);
   const [chartOptions, setChartOptions] = useState<ApexOptions | null>(null);
   const [categories, setCategories] = useState<string[]>([]);
+  const [isChartLoading, setIsChartLoading] = useState(true);
 
-  // Handle Escape key to close modal
+  const handleCloseModal = useCallback(() => {
+    // Reset chart state when closing modal
+    setIsChartLoading(true);
+    setChartData([]);
+    setChartOptions(null);
+    setCategories([]);
+    onClose();
+  }, [onClose]);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
-        onClose();
+        handleCloseModal();
       }
     };
-
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      // Prevent body scroll when modal is open
       document.body.style.overflow = 'hidden';
     }
-
     return () => {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, handleCloseModal]);
 
   useEffect(() => {
     if (metric) {
-      const data = generateTrendData(metric.trend, 30, 100);
-      setChartData(data);
+      // Reset chart state when metric changes
+      setIsChartLoading(true);
+      setChartData([]);
+      setChartOptions(null);
+      setCategories([]);
 
-      // Generate categories for the last 30 days
-      const cats = Array.from({ length: 30 }, (_, i) =>
-        new Date(Date.now() - (29 - i) * 86400000).toLocaleDateString(),
-      );
-      setCategories(cats);
+      // Small delay to ensure proper reset
+      const timer = setTimeout(() => {
+        const data = generateTrendData(metric.trend, 30, 100);
+        setChartData(data);
+        const cats = Array.from({ length: 30 }, (_, i) =>
+          new Date(Date.now() - (29 - i) * 86400000).toLocaleDateString(),
+        );
+        setCategories(cats);
 
-      // Create ApexCharts options matching the original design
-      const chartColor =
-        metric.trend >= 0
-          ? 'var(--trend-positive-dark)'
-          : 'var(--trend-negative-dark)';
+        const chartColor =
+          metric.trend >= 0
+            ? 'var(--trend-positive-dark)'
+            : 'var(--trend-negative-dark)';
 
-      const options: ApexOptions = {
-        chart: {
-          type: 'area',
-          height: 250,
-          toolbar: { show: false },
-          animations: { enabled: true },
-        },
-        dataLabels: { enabled: false },
-        stroke: {
-          curve: 'smooth',
-          width: 3,
-        },
-        series: [{ name: 'Value', data }],
-        xaxis: {
-          categories: cats,
-          labels: { show: false },
-          axisBorder: { show: false },
-          axisTicks: { show: false },
-        },
-        yaxis: {
-          labels: { style: { colors: '#6b7280' } },
-        },
-        grid: {
-          borderColor: '#e5e7eb',
-          strokeDashArray: 4,
-        },
-        tooltip: {
-          x: { format: 'dd MMM' },
-        },
-        colors: [chartColor],
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'light',
-            type: 'vertical',
-            opacityFrom: 0.7,
-            opacityTo: 0.1,
+        const options: ApexOptions = {
+          chart: {
+            type: 'area',
+            height: 250,
+            toolbar: { show: false },
+            animations: { enabled: true },
           },
-        },
-      };
+          dataLabels: { enabled: false },
+          stroke: {
+            curve: 'smooth',
+            width: 3,
+          },
+          series: [{ name: 'Value', data }],
+          xaxis: {
+            categories: cats,
+            labels: { show: false },
+            axisBorder: { show: false },
+            axisTicks: { show: false },
+          },
+          yaxis: {
+            labels: { style: { colors: '#6b7280' } },
+          },
+          grid: {
+            borderColor: '#e5e7eb',
+            strokeDashArray: 4,
+          },
+          tooltip: {
+            x: { format: 'dd MMM' },
+          },
+          colors: [chartColor],
+          fill: {
+            type: 'gradient',
+            gradient: {
+              shade: 'light',
+              type: 'vertical',
+              opacityFrom: 0.7,
+              opacityTo: 0.1,
+            },
+          },
+        };
+        setChartOptions(options);
+        setIsChartLoading(false);
+      }, 100);
 
-      setChartOptions(options);
+      return () => clearTimeout(timer);
     }
   }, [metric]);
 
@@ -123,13 +137,13 @@ export default function SocietyModal({
       aria-labelledby="modal-title"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
-          onClose();
+          handleCloseModal();
         }
       }}
     >
       <div className={styles.modalContent}>
         <button
-          onClick={onClose}
+          onClick={handleCloseModal}
           className={styles.closeButton}
           aria-label="Close modal"
         >
@@ -155,13 +169,17 @@ export default function SocietyModal({
             </span>
           </div>
           <div className={styles.modalChartContainer}>
-            {chartOptions && (
+            {isChartLoading ? (
+              <div className={styles.chartSkeleton} />
+            ) : chartOptions ? (
               <Chart
                 options={chartOptions}
                 series={[{ name: 'Value', data: chartData }]}
                 type="area"
                 height={250}
               />
+            ) : (
+              <div className={styles.chartLoading}>Chart unavailable</div>
             )}
           </div>
         </div>

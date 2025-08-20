@@ -1,41 +1,37 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { SocietyMetric } from '../../lib/types/society';
-import {
-  societyData,
-  sectionTitles,
-  sectionIcons,
-} from '../../lib/data/societyData';
 import SocietyHeader from './SocietyHeader';
 import SocietyFilter from './SocietyFilter';
 import SocietySection from './SocietySection';
 import SocietyModal from './SocietyModal';
 import SocietyMetricCard from './SocietyMetricCard';
-import { Gem } from 'lucide-react';
+import { SocietyMetric } from '../../lib/types/society';
+import {
+  societyData,
+  sectionTitles,
+  timeFrames,
+  filterOptions,
+} from '../../lib/data/societyData';
 import styles from './SocietyDashboard.module.css';
 
 export default function SocietyDashboard() {
-  const [selectedTimeFrame, setSelectedTimeFrame] = useState('30d');
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState(timeFrames[0].id);
+  const [activeFilter, setActiveFilter] = useState(filterOptions[0].id);
   const [selectedMetric, setSelectedMetric] = useState<SocietyMetric | null>(
     null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  // Load saved filter from localStorage
   useEffect(() => {
-    const savedFilter = localStorage.getItem('societyFilter');
-    if (savedFilter && savedFilter !== 'all') {
-      setActiveFilter(savedFilter);
-    }
-  }, []);
+    // Simulate initial loading
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 800);
 
-  // Save filter choice to localStorage
-  const handleFilterChange = (filter: string) => {
-    setActiveFilter(filter);
-    localStorage.setItem('societyFilter', filter);
-  };
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleMetricClick = (metric: SocietyMetric) => {
     setSelectedMetric(metric);
@@ -51,6 +47,17 @@ export default function SocietyDashboard() {
     return activeFilter === 'all' || activeFilter === sectionId;
   };
 
+  if (isInitialLoading) {
+    return (
+      <div className={styles.loadingOverlay}>
+        <div className={styles.loadingSpinner}>
+          <div className={styles.spinner} />
+          <div className={styles.loadingText}>Loading Dashboard...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -59,76 +66,65 @@ export default function SocietyDashboard() {
           onTimeFrameChange={setSelectedTimeFrame}
         />
 
-        {/* Key Metrics Section */}
-        <section className={styles.keyMetricsSection}>
+        <SocietyFilter
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
+
+        <div className={styles.keyMetricsSection}>
           <h2 className={styles.keyMetricsTitle}>
-            <Gem className={styles.keyMetricsIcon} />
+            <svg
+              className={styles.keyMetricsIcon}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
+              />
+            </svg>
             Key Metrics
           </h2>
           <div className={styles.keyMetricsGrid}>
-            {societyData['key-metrics'].map((metric, index) => (
-              <SocietyMetricCard
-                key={metric.title}
-                metric={metric}
-                index={index}
-                onClick={handleMetricClick}
-              />
-            ))}
-          </div>
-        </section>
-
-        <SocietyFilter
-          activeFilter={activeFilter}
-          onFilterChange={handleFilterChange}
-        />
-
-        {/* Main Dashboard Sections */}
-        <div className={styles.mainSections}>
-          <SocietySection
-            id="engagement"
-            title={sectionTitles.engagement}
-            icon={sectionIcons.engagement}
-            metrics={societyData.engagement}
-            onMetricClick={handleMetricClick}
-            isVisible={isSectionVisible('engagement')}
-          />
-
-          <SocietySection
-            id="monetization"
-            title={sectionTitles.monetization}
-            icon={sectionIcons.monetization}
-            metrics={societyData.monetization}
-            onMetricClick={handleMetricClick}
-            isVisible={isSectionVisible('monetization')}
-          />
-
-          <div className={styles.bottomGrid}>
-            <SocietySection
-              id="community-health"
-              title={sectionTitles['community-health']}
-              icon={sectionIcons['community-health']}
-              metrics={societyData['community-health']}
-              onMetricClick={handleMetricClick}
-              isVisible={isSectionVisible('community-health')}
-            />
-
-            <SocietySection
-              id="platform-health"
-              title={sectionTitles['platform-health']}
-              icon={sectionIcons['platform-health']}
-              metrics={societyData['platform-health']}
-              onMetricClick={handleMetricClick}
-              isVisible={isSectionVisible('platform-health')}
-            />
+            {societyData['key-metrics'].map(
+              (metric: SocietyMetric, index: number) => (
+                <SocietyMetricCard
+                  key={metric.title}
+                  metric={metric}
+                  index={index}
+                  onClick={handleMetricClick}
+                />
+              ),
+            )}
           </div>
         </div>
 
-        <SocietyModal
-          metric={selectedMetric}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
+        <div className={styles.mainSections}>
+          {Object.entries(sectionTitles).map(([sectionId, sectionTitle]) => (
+            <SocietySection
+              key={sectionId}
+              id={sectionId}
+              title={sectionTitle}
+              icon={sectionId}
+              metrics={
+                societyData[
+                  sectionId as keyof typeof societyData
+                ] as SocietyMetric[]
+              }
+              onMetricClick={handleMetricClick}
+              isVisible={isSectionVisible(sectionId)}
+            />
+          ))}
+        </div>
       </div>
+
+      <SocietyModal
+        metric={selectedMetric}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

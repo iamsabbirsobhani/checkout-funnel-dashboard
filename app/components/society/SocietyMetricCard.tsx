@@ -24,40 +24,47 @@ export default function SocietyMetricCard({
 }: SocietyMetricCardProps) {
   const [chartData, setChartData] = useState<number[]>([]);
   const [chartOptions, setChartOptions] = useState<ApexOptions | null>(null);
+  const [isChartLoading, setIsChartLoading] = useState(true);
 
   useEffect(() => {
-    // Generate chart data on mount
-    const data = generateTrendData(metric.trend);
-    setChartData(data);
+    // Simulate loading delay for better UX
+    const loadingTimer = setTimeout(() => {
+      // Generate chart data on mount
+      const data = generateTrendData(metric.trend);
+      setChartData(data);
 
-    // Create ApexCharts options matching the original design
-    const chartColor =
-      metric.trend >= 0
-        ? 'var(--trend-positive-dark)'
-        : 'var(--trend-negative-dark)';
+      // Create ApexCharts options matching the original design
+      const chartColor =
+        metric.trend >= 0
+          ? 'var(--trend-positive-dark)'
+          : 'var(--trend-negative-dark)';
 
-    const options: ApexOptions = {
-      chart: {
-        type: 'area',
-        height: 50,
-        sparkline: { enabled: true },
-        animations: { enabled: false },
-      },
-      stroke: {
-        curve: 'smooth',
-        width: 2.5,
-      },
-      fill: {
-        type: 'solid',
-        opacity: 0.2,
-      },
-      tooltip: { enabled: false },
-      series: [{ data }],
-      colors: [chartColor],
-    };
+      const options: ApexOptions = {
+        chart: {
+          type: 'area',
+          height: 50,
+          sparkline: { enabled: true },
+          animations: { enabled: false },
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2.5,
+        },
+        fill: {
+          type: 'solid',
+          opacity: 0.2,
+        },
+        tooltip: { enabled: false },
+        series: [{ data }],
+        colors: [chartColor],
+      };
 
-    setChartOptions(options);
-  }, [metric.trend]);
+      setChartOptions(options);
+      setIsChartLoading(false);
+    }, 300 + index * 50); // Staggered loading for visual effect
+
+    return () => clearTimeout(loadingTimer);
+  }, [metric.trend, index]);
 
   const trendSign = metric.trend > 0 ? '+' : '';
   const trendClass =
@@ -106,13 +113,17 @@ export default function SocietyMetricCard({
         </div>
       </div>
       <div className={styles.chartContainer}>
-        {chartOptions && (
+        {isChartLoading ? (
+          <div className={styles.chartSkeleton} />
+        ) : chartOptions ? (
           <Chart
             options={chartOptions}
             series={[{ data: chartData }]}
             type="area"
             height={50}
           />
+        ) : (
+          <div className={styles.chartLoading}>Chart unavailable</div>
         )}
       </div>
     </div>
