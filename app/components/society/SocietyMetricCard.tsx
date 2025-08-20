@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Diamond, Star, TrendingUp, TrendingDown, Info } from 'lucide-react';
+import { Gem, Star, TrendingUp, TrendingDown, Info } from 'lucide-react';
 import { SocietyMetric } from '../../lib/types/society';
 import { generateTrendData } from '../../lib/data/societyData';
 import styles from './SocietyMetricCard.module.css';
@@ -25,6 +25,23 @@ export default function SocietyMetricCard({
   const [chartData, setChartData] = useState<number[]>([]);
   const [chartOptions, setChartOptions] = useState<ApexOptions | null>(null);
   const [isChartLoading, setIsChartLoading] = useState(true);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const infoIconRef = useRef<HTMLDivElement>(null);
+
+  const handleInfoMouseEnter = (e: React.MouseEvent) => {
+    if (infoIconRef.current) {
+      const rect = infoIconRef.current.getBoundingClientRect();
+      const x = rect.left + rect.width / 2 - 140; // Center the tooltip
+      const y = rect.top - 10; // Position above the icon
+      setTooltipPosition({ x, y });
+      setShowTooltip(true);
+    }
+  };
+
+  const handleInfoMouseLeave = () => {
+    setShowTooltip(false);
+  };
 
   useEffect(() => {
     // Simulate loading delay for better UX
@@ -85,18 +102,17 @@ export default function SocietyMetricCard({
         <div className={styles.titleRow}>
           <span className={styles.title}>{metric.title}</span>
           <div className={styles.iconContainer}>
-            {metric.keyMetric && (
-              <Diamond className={styles.keyMetricDiamond} />
-            )}
+            {metric.keyMetric && <Gem className={styles.keyMetricGem} />}
             {metric.priority && !metric.keyMetric && (
               <Star className={styles.priorityStar} />
             )}
-            <div className={styles.infoIconWrapper}>
+            <div
+              className={styles.infoIconWrapper}
+              ref={infoIconRef}
+              onMouseEnter={handleInfoMouseEnter}
+              onMouseLeave={handleInfoMouseLeave}
+            >
               <Info className={styles.infoIcon} />
-              <span
-                className={styles.infoTooltip}
-                dangerouslySetInnerHTML={{ __html: metric.description }}
-              />
             </div>
           </div>
         </div>
@@ -126,6 +142,18 @@ export default function SocietyMetricCard({
           <div className={styles.chartLoading}>Chart unavailable</div>
         )}
       </div>
+
+      {/* Fixed positioned tooltip */}
+      {showTooltip && (
+        <div
+          className={styles.infoTooltip}
+          style={{
+            left: `${tooltipPosition.x}px`,
+            top: `${tooltipPosition.y}px`,
+          }}
+          dangerouslySetInnerHTML={{ __html: metric.description }}
+        />
+      )}
     </div>
   );
 }

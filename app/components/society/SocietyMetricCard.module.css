@@ -14,6 +14,7 @@
   min-height: 140px;
   max-height: 180px;
   overflow: hidden;
+  position: relative;
 }
 
 @media (min-width: 640px) {
@@ -52,6 +53,7 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
+  position: relative;
 }
 
 .titleRow {
@@ -62,6 +64,8 @@
   color: var(--text-secondary);
   margin-bottom: 0.5rem;
   flex-shrink: 0;
+  overflow: visible;
+  position: relative;
 }
 
 .title {
@@ -100,12 +104,20 @@
   flex-shrink: 0;
 }
 
-.keyMetricDiamond {
+.keyMetricGem {
   color: var(--glow-color-key-metrics);
   width: 14px;
   height: 14px;
   fill: currentColor;
   margin-right: 0.25rem;
+}
+
+@media (min-width: 640px) {
+  .keyMetricGem {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+  }
 }
 
 .priorityStar {
@@ -120,6 +132,7 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  z-index: 10000;
 }
 
 .infoIcon {
@@ -128,6 +141,7 @@
   width: 14px;
   height: 14px;
   transition: color 0.2s ease-in-out;
+  z-index: 10001;
 }
 
 .infoIcon:hover {
@@ -135,24 +149,23 @@
 }
 
 .infoTooltip {
-  visibility: hidden;
+  visibility: visible;
   width: 280px;
   background-color: var(--text-primary);
   color: var(--background-main);
   text-align: left;
   border-radius: 8px;
   padding: 10px 14px;
-  position: absolute;
-  z-index: 10;
-  bottom: 135%;
-  left: 50%;
-  margin-left: -140px;
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-  transform: translateY(10px);
+  position: fixed;
+  z-index: 10002;
+  opacity: 1;
   font-size: 13px;
   line-height: 1.6;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  white-space: normal;
+  word-wrap: break-word;
+  pointer-events: none;
+  transform: translateY(-100%);
 }
 
 .infoTooltip::after {
@@ -164,12 +177,6 @@
   border-width: 6px;
   border-style: solid;
   border-color: var(--text-primary) transparent transparent transparent;
-}
-
-.infoIconWrapper:hover .infoTooltip {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .valueRow {
@@ -299,7 +306,7 @@
 }
 
 @media (min-width: 640px) {
-  .keyMetricDiamond {
+  .keyMetricGem {
     width: 16px;
     height: 16px;
     margin-right: 0.5rem;

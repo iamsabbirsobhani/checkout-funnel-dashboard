@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Gem } from 'lucide-react';
 import SocietyHeader from './SocietyHeader';
 import SocietyFilter from './SocietyFilter';
 import SocietySection from './SocietySection';
@@ -73,18 +74,7 @@ export default function SocietyDashboard() {
 
         <div className={styles.keyMetricsSection}>
           <h2 className={styles.keyMetricsTitle}>
-            <svg
-              className={styles.keyMetricsIcon}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
-              />
-            </svg>
+            <Gem className={styles.keyMetricsIcon} />
             Key Metrics
           </h2>
           <div className={styles.keyMetricsGrid}>
@@ -102,23 +92,49 @@ export default function SocietyDashboard() {
         </div>
 
         <div className={styles.mainSections}>
-          {Object.entries(sectionTitles).map(([sectionId, sectionTitle]) => (
-            <SocietySection
-              key={sectionId}
-              id={sectionId}
-              title={sectionTitle}
-              icon={sectionId}
-              metrics={
-                societyData[
-                  sectionId as keyof typeof societyData
-                ] as SocietyMetric[]
-              }
-              onMetricClick={handleMetricClick}
-              isVisible={isSectionVisible(sectionId)}
-            />
-          ))}
+          {Object.entries(sectionTitles).map(([sectionId, sectionTitle]) => {
+            // Only show sections that match the active filter
+            if (!isSectionVisible(sectionId)) {
+              return null;
+            }
+
+            return (
+              <SocietySection
+                key={sectionId}
+                id={sectionId}
+                title={sectionTitle}
+                icon={sectionId}
+                metrics={
+                  societyData[
+                    sectionId as keyof typeof societyData
+                  ] as SocietyMetric[]
+                }
+                onMetricClick={handleMetricClick}
+                isVisible={true}
+              />
+            );
+          })}
         </div>
       </div>
+
+      <footer className={styles.footer}>
+        <div className={styles.footerContent}>
+          <div className={styles.copyright}>
+            © 2024 Corvin Van Stone. All rights reserved.
+          </div>
+          <div className={styles.poweredBy}>
+            Powered by{' '}
+            <a
+              href="https://selfpublishingtitans.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.poweredByLink}
+            >
+              Digital Titans
+            </a>
+          </div>
+        </div>
+      </footer>
 
       <SocietyModal
         metric={selectedMetric}
