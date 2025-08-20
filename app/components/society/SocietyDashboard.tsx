@@ -67,11 +67,6 @@ export default function SocietyDashboard() {
           onTimeFrameChange={setSelectedTimeFrame}
         />
 
-        <SocietyFilter
-          activeFilter={activeFilter}
-          onFilterChange={setActiveFilter}
-        />
-
         <div className={styles.keyMetricsSection}>
           <h2 className={styles.keyMetricsTitle}>
             <Gem className={styles.keyMetricsIcon} />
@@ -90,6 +85,11 @@ export default function SocietyDashboard() {
             )}
           </div>
         </div>
+
+        <SocietyFilter
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
 
         <div className={styles.mainSections}>
           {Object.entries(sectionTitles).map(([sectionId, sectionTitle]) => {

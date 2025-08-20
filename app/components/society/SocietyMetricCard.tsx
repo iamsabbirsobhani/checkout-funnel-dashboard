@@ -30,6 +30,7 @@ export default function SocietyMetricCard({
   const infoIconRef = useRef<HTMLDivElement>(null);
 
   const handleInfoMouseEnter = (e: React.MouseEvent) => {
+    console.log('Mouse enter triggered'); // Debug log
     if (infoIconRef.current) {
       const rect = infoIconRef.current.getBoundingClientRect();
       const tooltipWidth = 280;
@@ -54,6 +55,7 @@ export default function SocietyMetricCard({
         y = rect.bottom + 10;
       }
 
+      console.log('Tooltip position:', { x, y, rect }); // Debug log
       setTooltipPosition({ x, y });
       setShowTooltip(true);
     }
