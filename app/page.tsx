@@ -1,5 +1,5 @@
-import { Dashboard } from './components/dashboard/Dashboard';
+import SocietyDashboard from './components/society/SocietyDashboard';
 
 export default function Home() {
-  return <Dashboard />;
+  return <SocietyDashboard />;
 }

@@ -1,0 +1,157 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(17, 24, 39, 0.5);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.modalContent {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 56rem;
+  transform: scale(1);
+  opacity: 1;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 640px) {
+  .modalContent {
+    padding: 1rem;
+    margin: 0.5rem;
+    max-height: 95vh;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #9ca3af;
+  transition: color 0.2s ease-in-out;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .closeButton {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
+
+.closeButton:hover {
+  color: #374151;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 640px) {
+  .modalTitle {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.modalDescription {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.modalValueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .modalValueRow {
+    gap: 0.5rem;
+  }
+}
+
+.modalValue {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .modalValue {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+.modalTrendContainer {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .modalTrendContainer {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.modalTrendPositive {
+  color: var(--trend-positive-soft);
+}
+
+.modalTrendNegative {
+  color: var(--trend-negative-soft);
+}
+
+.modalTrendIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .modalTrendIcon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.modalChartContainer {
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .modalChartContainer {
+    height: 200px;
+  }
+}

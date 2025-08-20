@@ -10,23 +10,25 @@
   },
   "dependencies": {
     "@types/chart.js": "^2.9.41",
+    "apexcharts": "^5.3.3",
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.540.0",
     "next": "15.5.0",
     "react": "19.1.0",
+    "react-apexcharts": "^1.7.0",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.12",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.12",
     "typescript": "^5"
   }
 }
