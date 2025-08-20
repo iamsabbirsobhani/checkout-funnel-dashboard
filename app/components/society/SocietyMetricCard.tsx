@@ -32,8 +32,28 @@ export default function SocietyMetricCard({
   const handleInfoMouseEnter = (e: React.MouseEvent) => {
     if (infoIconRef.current) {
       const rect = infoIconRef.current.getBoundingClientRect();
-      const x = rect.left + rect.width / 2 - 140; // Center the tooltip
-      const y = rect.top - 10; // Position above the icon
+      const tooltipWidth = 280;
+      const tooltipHeight = 120; // Approximate height
+      
+      // Calculate center position
+      let x = rect.left + rect.width / 2 - tooltipWidth / 2;
+      let y = rect.top - tooltipHeight - 10; // Position above the icon
+      
+      // Ensure tooltip stays within viewport bounds
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      // Adjust horizontal position if it goes outside viewport
+      if (x < 10) x = 10;
+      if (x + tooltipWidth > viewportWidth - 10) {
+        x = viewportWidth - tooltipWidth - 10;
+      }
+      
+      // If tooltip would go above viewport, position it below the icon
+      if (y < 10) {
+        y = rect.bottom + 10;
+      }
+      
       setTooltipPosition({ x, y });
       setShowTooltip(true);
     }

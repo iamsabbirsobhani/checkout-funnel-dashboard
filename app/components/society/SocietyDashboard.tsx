@@ -120,7 +120,7 @@ export default function SocietyDashboard() {
       <footer className={styles.footer}>
         <div className={styles.footerContent}>
           <div className={styles.copyright}>
-            © 2024 Corvin Van Stone. All rights reserved.
+            © {new Date().getFullYear()} Corvin Van Stone. All rights reserved.
           </div>
           <div className={styles.poweredBy}>
             Powered by{' '}
