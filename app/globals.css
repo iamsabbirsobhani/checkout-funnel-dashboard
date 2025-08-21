@@ -15,10 +15,10 @@
   --text-secondary: #6b7280; /* Gray-500 */
 
   /* Defined soft and dark colors for trends */
-  --trend-positive-soft: #16a34a; /* Green-600 for text */
-  --trend-negative-soft: #dc2626; /* Red-600 for text */
-  --trend-positive-dark: #15803d; /* Green-700 for chart lines */
-  --trend-negative-dark: #b91c1c; /* Red-700 for chart lines */
+  --trend-positive-soft: #10b981; /* Green-500 for text */
+  --trend-negative-soft: #ef4444; /* Red-500 for text */
+  --trend-positive-dark: #10b981; /* Green-500 for chart lines */
+  --trend-negative-dark: #ef4444; /* Red-500 for chart lines */
 }
 
 @theme inline {

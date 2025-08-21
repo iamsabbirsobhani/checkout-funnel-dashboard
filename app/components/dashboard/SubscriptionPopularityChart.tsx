@@ -36,7 +36,7 @@ export const SubscriptionPopularityChart: React.FC<
       {
         label: 'Active Subscriptions',
         data: subscriptionPlans.map((plan) => plan.count),
-        backgroundColor: '#4f46e5',
+        backgroundColor: '#3b82f6',
         borderRadius: 4,
       },
     ],
@@ -53,7 +53,7 @@ export const SubscriptionPopularityChart: React.FC<
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         titleColor: '#ffffff',
         bodyColor: '#ffffff',
-        borderColor: '#4f46e5',
+        borderColor: '#3b82f6',
         borderWidth: 1,
       },
     },
