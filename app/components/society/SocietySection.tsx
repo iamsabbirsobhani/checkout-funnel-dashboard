@@ -38,6 +38,10 @@ export default function SocietySection({
 }: SocietySectionProps) {
   const IconComponent = iconMap[icon] || MessageSquare; // fallback to MessageSquare
 
+  // For engagement section, separate priority and non-priority metrics
+  const priorityMetrics = metrics.filter((metric) => metric.priority);
+  const nonPriorityMetrics = metrics.filter((metric) => !metric.priority);
+
   return (
     <section
       id={id}
@@ -50,20 +54,49 @@ export default function SocietySection({
         <IconComponent className={styles.sectionIcon} />
         {title}
       </h2>
-      <div
-        className={`${styles.grid} ${
-          id === 'monetization' ? styles.monetization : ''
-        }`}
-      >
-        {metrics.map((metric, index) => (
-          <SocietyMetricCard
-            key={metric.title}
-            metric={metric}
-            index={index}
-            onClick={onMetricClick}
-          />
-        ))}
-      </div>
+
+      {id === 'engagement' ? (
+        <>
+          {/* First row - 3 priority metrics */}
+          <div className={styles.engagementFirstRow}>
+            {priorityMetrics.map((metric, index) => (
+              <SocietyMetricCard
+                key={metric.title}
+                metric={metric}
+                index={index}
+                onClick={onMetricClick}
+              />
+            ))}
+          </div>
+
+          {/* Second row - 4 non-priority metrics */}
+          <div className={styles.engagementSecondRow}>
+            {nonPriorityMetrics.map((metric, index) => (
+              <SocietyMetricCard
+                key={metric.title}
+                metric={metric}
+                index={index + priorityMetrics.length}
+                onClick={onMetricClick}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div
+          className={`${styles.grid} ${
+            id === 'monetization' ? styles.monetization : ''
+          }`}
+        >
+          {metrics.map((metric, index) => (
+            <SocietyMetricCard
+              key={metric.title}
+              metric={metric}
+              index={index}
+              onClick={onMetricClick}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -8,6 +8,7 @@ import { DetailedMetrics } from './DetailedMetrics';
 import { OfferConversionRates } from './OfferConversionRates';
 import { SubscriptionPopularityChart } from './SubscriptionPopularityChart';
 import { HistoryModal } from '../ui/HistoryModal';
+import { EngagementSection } from '../engagement/EngagementSection';
 import {
   TimeFrame,
   FunnelType,
@@ -19,6 +20,10 @@ import {
   calculateMetrics,
   INDIVIDUAL_FUNNELS,
 } from '../../lib/data/mockData';
+import {
+  generateEngagementData,
+  calculateEngagementMetrics,
+} from '../../lib/data/engagementData';
 
 export const Dashboard: React.FC = () => {
   const [selectedTimeframe, setSelectedTimeframe] =
@@ -47,11 +52,18 @@ export const Dashboard: React.FC = () => {
   );
   const metrics = calculateMetrics(currentData);
 
+  const engagementData = generateEngagementData(
+    selectedTimeframe,
+    getCurrentFunnel() as FunnelType,
+  );
+  const engagementMetrics = calculateEngagementMetrics(engagementData);
+
   // Update record highs
   const updateRecordHighs = useCallback(() => {
     const key = `${selectedTimeframe}-${getCurrentFunnel()}`;
     if (!recordHighs[key]) recordHighs[key] = {};
 
+    // Update dashboard metrics record highs
     Object.keys(metrics).forEach((metric) => {
       const isRate = metric.toLowerCase().includes('rate');
       const isChurn = metric === 'churnRate';
@@ -71,11 +83,30 @@ export const Dashboard: React.FC = () => {
         }));
       }
     });
+
+    // Update engagement metrics record highs
+    Object.keys(engagementMetrics).forEach((metric) => {
+      const isRate = metric.toLowerCase().includes('rate');
+      const currentValue =
+        engagementMetrics[metric as keyof typeof engagementMetrics];
+      const currentHigh = recordHighs[key][metric] || 0;
+
+      if (currentValue > currentHigh) {
+        setRecordHighs((prev) => ({
+          ...prev,
+          [key]: {
+            ...prev[key],
+            [metric]: currentValue,
+          },
+        }));
+      }
+    });
   }, [
     selectedTimeframe,
     selectedFunnel,
     selectedIndividualFunnel,
     metrics,
+    engagementMetrics,
     recordHighs,
   ]);
 
@@ -88,7 +119,10 @@ export const Dashboard: React.FC = () => {
     (metricKey: string, title: string) => {
       let historyData: number[];
 
-      if (metricKey.includes('Rate')) {
+      // Check if it's an engagement metric
+      if (engagementData.history[metricKey]) {
+        historyData = engagementData.history[metricKey];
+      } else if (metricKey.includes('Rate')) {
         // Calculate rate history
         const numeratorKey =
           metricKey === 'conversionRate'
@@ -132,7 +166,7 @@ export const Dashboard: React.FC = () => {
       setHistoryModalData({ title, data: historyData });
       setIsHistoryModalOpen(true);
     },
-    [currentData.history],
+    [currentData.history, engagementData.history],
   );
 
   const handleTimeframeChange = (timeframe: TimeFrame) => {
@@ -187,6 +221,13 @@ export const Dashboard: React.FC = () => {
         {/* Detailed Metrics */}
         <DetailedMetrics
           metrics={metrics}
+          recordHighs={currentRecordHighs}
+          onHistoryClick={handleHistoryClick}
+        />
+
+        {/* Engagement & Content Section */}
+        <EngagementSection
+          metrics={engagementMetrics}
           recordHighs={currentRecordHighs}
           onHistoryClick={handleHistoryClick}
         />

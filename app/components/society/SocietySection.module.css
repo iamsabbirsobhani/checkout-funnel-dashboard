@@ -89,3 +89,65 @@
     gap: 1rem;
   }
 }
+
+/* Special grid for engagement section - 3 columns first row, 4 columns second row */
+.engagementFirstRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.engagementSecondRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .engagementFirstRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .engagementSecondRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .engagementFirstRow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .engagementSecondRow {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .engagementFirstRow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .engagementSecondRow {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .engagementFirstRow {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .engagementSecondRow {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+}

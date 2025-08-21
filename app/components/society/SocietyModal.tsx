@@ -44,11 +44,15 @@ export default function SocietyModal({
     };
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
+      if (document.body) {
+        document.body.style.overflow = 'hidden';
+      }
     }
     return () => {
       document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      if (document.body) {
+        document.body.style.overflow = 'unset';
+      }
     };
   }, [isOpen, handleCloseModal]);
 

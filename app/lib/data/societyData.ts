@@ -45,11 +45,35 @@ export const societyData: SocietyData = {
     ],
     'engagement': [
         {
+            title: 'Number of Posts',
+            value: '2,450',
+            trend: 15,
+            unit: '',
+            priority: true,
+            description: '<b>What:</b> Total number of posts published in the selected timeframe.<br><b>How:</b> Count of all posts created and published by users.<br><b>Ex:</b> A user creates a new post. Does <u>not</u> count draft posts or deleted posts.'
+        },
+        {
+            title: 'Number of Post Likes',
+            value: '18.2k',
+            trend: 8,
+            unit: '',
+            priority: true,
+            description: '<b>What:</b> Total number of likes received across all posts in the selected timeframe.<br><b>How:</b> Sum of all like interactions on published posts.<br><b>Ex:</b> A user likes a post. Does <u>not</u> count likes on deleted posts.'
+        },
+        {
+            title: 'Number of Comments',
+            value: '4,320',
+            trend: 12,
+            unit: '',
+            priority: true,
+            description: '<b>What:</b> Total number of comments received across all posts in the selected timeframe.<br><b>How:</b> Count of all comment interactions on published posts.<br><b>Ex:</b> A user comments on a post. Does <u>not</u> count comments on deleted posts.'
+        },
+        {
             title: 'Time Spent per Session',
             value: '12.5',
             trend: -0.5,
             unit: 'm',
-            priority: true,
+            priority: false,
             description: '<b>What:</b> The average duration a user is actively engaged on the platform.<br><b>How:</b> Total active time of all users / Total number of sessions.<br><b>Ex:</b> A user actively browsing for 10 mins. Does <u>not</u> count time spent idle in a background browser tab.'
         },
         {
@@ -57,7 +81,7 @@ export const societyData: SocietyData = {
             value: '11',
             trend: 1,
             unit: '%',
-            priority: true,
+            priority: false,
             description: '<b>What:</b> Percentage of daily active users who create content.<br><b>How:</b> (Unique Content Creators / DAU) * 100.<br><b>Ex:</b> A user makes a post or a comment. Does <u>not</u> count a user who only likes or views content.'
         },
         {
@@ -65,7 +89,7 @@ export const societyData: SocietyData = {
             value: '1.8',
             trend: 0.2,
             unit: 'avg',
-            priority: true,
+            priority: false,
             description: '<b>What:</b> The average number of comments per post.<br><b>How:</b> Total Comments / Total Posts.<br><b>Ex:</b> A direct reply to a post. Does <u>not</u> include post likes, shares, or other reactions.'
         },
         {
@@ -73,7 +97,7 @@ export const societyData: SocietyData = {
             value: '240',
             trend: 25,
             unit: '',
-            priority: true,
+            priority: false,
             description: '<b>What:</b> Total groups with meaningful activity in the last 7 days.<br><b>How:</b> A count of groups with a new post, comment, or call.<br><b>Ex:</b> A group where a member posted yesterday. Does <u>not</u> count a group where members only viewed old content.'
         }
     ],
